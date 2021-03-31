@@ -1,4 +1,6 @@
-//PARTIE AFFICHAGE DE BACKGROUND::#include "perso.h"
+//PARTIE AFFICHAGE DE BACKGROUND::
+
+#include "perso.h"
 #include "background.h"
 
 #define GRAVITY 10

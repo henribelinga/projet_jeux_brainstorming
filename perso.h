@@ -34,22 +34,25 @@ float y1 , y2 , y3 , y4 , y5 , y6 , y7 , y8 , y9 , y10 , y11 , y12 , y13 , y14 ,
 
 typedef struct Input
 {
- int left,right,jump,acction,down;
+ int left,right,jump,action,down;
 
 } Input;
 
+
+
 void init_input (Input *I);
-
-
-void init_perso (perso *p);
+void initialiser_perso(perso *p);
+void initialiser_joueur(perso * p);
+void initialiser_input(Input * I);
+void afficher_joueur(perso *p,SDL_Surface *ecran);
 void afficher_perso (perso *p,SDL_Surface *ecran);
 void animation_right (perso *p);
 void animation_left (perso *p);
 void animation_stable (perso *p);
 void mouvementright (perso *p);
 void mouvementleft (perso *p);
-void JPR (perso *p);
-void JPL (perso *p);
+void jumpright(perso *p);
+void jumpleft(perso *p);
 
 
  #endif

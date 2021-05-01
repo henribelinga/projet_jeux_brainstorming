@@ -7,8 +7,16 @@
 #define SPEED 5
 #define MAX_SPEED 10
 #define MAX_JUMP_SPEED 30
+#include <stdio.h>
+#include <stdlib.h>
+#include <SDL/SDL.h>
+#include <stdbool.h>
+#include <math.h>  
+#include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
+#include <SDL/SDL_mixer.h>
 
-int ground=330; //480
+int ground=330; //480 pour les obstacles
 
 
 void main()
@@ -23,18 +31,20 @@ SDL_WM_SetCaption("personnage\t1",NULL);//titre de la fenetre
 
 background b;
 Input I;
-perso p;
+perso p, p2;
+
 SDL_Event event;
-initialiser_perso (&p);
-initialiser_input (&I);
-initialiser_background (&b);
+initialiser_perso(&p);
+initialiser_perso(&p2);
+initialiser_input(&I);
+initialiser_background(&b);
 bool running=true;
+int keysHeld[323]={0};
 
 
+SDL_EnableKeyRepeat(200,0);//pour ne pas maintenir des boutons en meme temps
 
-SDL_EnableKeyRepeat(200,0);
-
-
+        
 while(running)
 {
 
@@ -48,20 +58,11 @@ while(SDL_PollEvent(&event))
 		// (*action)=0;
 			running=false;
 		break;
-		case SDL_KEYDOWN:
+		case SDL_KEYDOWN:// touche enfoncee
+                        keysHeld[event.key.keysym.sym]=1;
 			switch (event.key.keysym.sym)
 			{
-			/*	case SDLK_ESCAPE:
-
-				pause(ecran,&next,nb_stage,action);
-				read_volume (&vm,&vsfx);
-				Mix_VolumeMusic(vm);
-			Mix_PlayMusic(musique, -1);
-				break;
-			case SDLK_RIGHT:
-				I.right=1;
-
-			break; */
+			
 			case SDLK_LEFT :
 				I.left=1;
 
@@ -71,23 +72,21 @@ while(SDL_PollEvent(&event))
       		case SDLK_RIGHT :
 				I.right=1;
 				
-
+       //action d'entrer une variable dans un programme
 
       		break;
 			case SDLK_SPACE :
 				I.jump=1;
 				if(p.rect.y==ground)//collision with ground
-								p.speedY = -60;
+			  p.speedY = -60; // diminution de la vitesse de mvt
 			 //collision with stairs -1 au lieu de -30
-					p.speedX=MAX_JUMP_SPEED;
+			p.speedX=MAX_JUMP_SPEED;// augmentation du mouvement
 			break; 
-			/*case SDLK_DOWN :
-				I.down=1;
-				    p.yvelocity =  1;
-			break;*/
+			
 			}
 		break;
-		case SDL_KEYUP:
+		case SDL_KEYUP:// lorsque la touche est relachee
+                          keysHeld[event.key.keysym.sym]=0;
 			switch (event.key.keysym.sym)
 			{
 			case SDLK_RIGHT:
@@ -100,11 +99,7 @@ while(SDL_PollEvent(&event))
 			I.jump=0; 
 
 			break;
-			//case SDLK_DOWN :
-			//	I.down=0;
-			//	if( p.yvelocity > 0 )
-			//			p.yvelocity = 0;
-		//	break;
+			
 			}
 		break;
 		}
@@ -117,22 +112,19 @@ while(SDL_PollEvent(&event))
 	animation_right(&p);
 	if (I.jump==0) mouvementright (&p);
 	 else if (I.jump==1) jumpright (&p);
-scrolling_right (&b,&p,ecran);
+scrolling_right (&b,&p,ecran);// defilement a droite du back sur l'ecran
 }
 else if (I.left==1 )
 {
-	p.speedX+=SPEED;
+	p.speedX-=1;
 	animation_left(&p);
 	if (I.jump==0)  mouvementleft (&p);
 	else if (I.jump==1) jumpleft (&p);
 		scrolling_left (&b,&p,ecran);
 
 }
-/*else if (I.left==0 && I.jump==0 && I.right==0 )
-{
-	animation_stable(&p);
-}*/
-p.speedY+=GRAVITY;
+
+ p.speedY+=GRAVITY; //exercion de la gravite
  p.rect.y += p.speedY;
  p.rect_relative.y += p.speedY;
  if(p.rect.y >= ground)
@@ -141,17 +133,23 @@ p.speedY+=GRAVITY;
 		 p.rect_relative.y= ground;
  		 p.speedY = 0;
 }
-    //SDL_BlitSurface(back,NULL,ecran,NULL);
-	afficher_background(ecran,&b);
-	afficher_perso (&p,ecran);
+        afficher_background2(ecran,&b);
+        afficher_background(ecran,&b);
+        //je dois faire le partage à ce niveau
+        //afficher_perso(&p2,ecran);
+	//afficher_perso(&p,ecran);
+	
 	SDL_Flip(ecran);
-	SDL_Delay(16);
+	SDL_Delay(16); // temps maximal d'execution
 }
-TTF_Quit();
 
 
 
 
+
+
+SDL_Quit();
+return 0;
 }
 
 

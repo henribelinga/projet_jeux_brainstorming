@@ -14,7 +14,6 @@ enigme generer(){
     coeffQ[3]=coeffQ[0]+coeffQ[2];
 
 
-
 	sprintf(e.question,"(%d * %d)+ %d - %d =?",coeffQ[0],coeffQ[1],coeffQ[2],coeffQ[3]);
  
     sol=(coeffQ[0]*coeffQ[1])+coeffQ[2]-coeffQ[3];//calculer la sol
@@ -63,7 +62,7 @@ void afficherEnigme(enigme *e, SDL_Surface * screen){
       
 SDL_Surface *texte,*R1,*R2,*R3,*back,*bouton;
 SDL_Rect posQ,pos1,pos2,pos3,posbouton1,posbouton2,posbouton3;
-SDL_Color couleurNoire = {0, 0, 0};
+SDL_Color couleurNoire = {0, 255, 0};
 TTF_Font *police = NULL,*police2 = NULL;
 
 bouton=IMG_Load("bouton.png");
